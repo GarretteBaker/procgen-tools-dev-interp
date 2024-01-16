@@ -233,9 +233,9 @@ def load_policy(model_file: str, action_size: int, device = None) -> Categorical
 
     checkpoint = torch.load(model_file, map_location=device)
 
-    # # CURSED. scale varies between models trained on the lauro vs. master branch. 
-    # global scale
-    # scale = checkpoint['model_state_dict']['embedder.block1.conv.weight'].shape[0]//16
+    # CURSED. scale varies between models trained on the lauro vs. master branch. 
+    global scale
+    scale = checkpoint['model_state_dict']['embedder.block1.conv.weight'].shape[0]//16
 
     model = InterpretableImpalaModel(in_channels=3)
     policy = CategoricalPolicy(model, action_size=action_size)

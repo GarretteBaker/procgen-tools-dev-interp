@@ -22,7 +22,8 @@ run = api.run(f"{project_name}/{run_id}")
 
 # List all artifacts for this run
 artifacts = run.logged_artifacts()
-for artifact in tqdm(artifacts):
+artifacts_list = [artifact for artifact in artifacts]
+for artifact in tqdm(artifacts_list[2202:]):
     artifact_to_download = api.artifact(f"{project_name}/{artifact.name}", type="model")
     artifact_dir = artifact_to_download.download()
     model_file = f"{artifact_dir}/{artifact.name[:-3]}.pth"

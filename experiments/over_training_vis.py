@@ -1,3 +1,4 @@
+print("Importing libraries...")
 import wandb
 from tqdm import tqdm
 import torch
@@ -14,16 +15,22 @@ def get_model_number(model_name):
 run_id = "jp9tjfzd"
 project_name = "procgen"
 
+print("Fetching run...")
 # Initialize wandb API
 api = wandb.Api()
 
 # Fetch the run
 run = api.run(f"{project_name}/{run_id}")
 
+print("Fetching the artifacts...")
 # List all artifacts for this run
 artifacts = run.logged_artifacts()
 artifacts_list = [artifact for artifact in artifacts]
-for artifact in tqdm(artifacts_list[2202:]):
+directory = "./frames"
+print("Counting previous frames...")
+file_count = len([name for name in os.listdir(directory) if os.path.isfile(os.path.join(directory, name))])
+print("Looping")
+for artifact in tqdm(artifacts_list[file_count:]):
     artifact_to_download = api.artifact(f"{project_name}/{artifact.name}", type="model")
     artifact_dir = artifact_to_download.download()
     model_file = f"{artifact_dir}/{artifact.name[:-3]}.pth"
